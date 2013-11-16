@@ -17,6 +17,6 @@ The command `mvn clean package` will result in a fat-jar in the target directory
 
 After copying the jar to your raspberry pi, you can run the application with `java -jar asciicamera-1.0-SNAPSHOT.one-jar.jar`
 
-When adding a filename as parameter the camara is not used but the given filename.
+When adding a filename as parameter the camera is not used but the given filename.
 
 
