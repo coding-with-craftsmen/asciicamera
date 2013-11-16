@@ -3,6 +3,8 @@ package nl.codecentric.cc.asciicamera;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -18,15 +20,25 @@ public class App {
     public static final int MAX_INTENSITY = 256 * 3;
 
     public static void main(String[] args) throws IOException, InterruptedException {
-        BufferedImage picture = takePicture();
-        for (int y = 0; y < PICTURE_HEIGHT; y++) {
-            for (int x = 0; x < PICTURE_WIDTH; x++) {
+        BufferedImage picture;
+        if (args != null && args.length > 0) {
+            picture = loadPicture(args[0]);
+        } else {
+            picture = takePicture();
+        }
+        for (int y = 0; y < picture.getHeight(); y++) {
+            for (int x = 0; x < picture.getWidth(); x++) {
                 Color color = getColor(picture, x, y);
-                System.out.print(String.format("\033[1;$dm$s", toTerminalColor(color), toTerminalCharacter(color)));
+                System.out.print(String.format("\033[1;%dm%s", toTerminalColor(color), toTerminalCharacter(color)));
             }
             System.out.println();
         }
+    }
 
+    private static BufferedImage loadPicture(String fileName) throws IOException {
+        File file = new File(fileName);
+        InputStream inputStream = new FileInputStream(file);
+        return ImageIO.read(inputStream);
     }
 
     private static int toTerminalColor(Color color) {
